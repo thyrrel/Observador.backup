@@ -12,15 +12,24 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # -----------------------------
+      # Checkout código
+      # -----------------------------
       - name: Checkout código
         uses: actions/checkout@v4
 
+      # -----------------------------
+      # Configurar Java 17
+      # -----------------------------
       - name: Configurar Java
         uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: 17
 
+      # -----------------------------
+      # Configurar Flutter 3.28.1 estável
+      # -----------------------------
       - name: Configurar Flutter
         uses: subosito/flutter-action@v2
         with:
@@ -28,9 +37,9 @@ jobs:
           channel: stable
 
       # -----------------------------
-      # Cache de dependências Flutter
+      # Cache de dependências Flutter/Dart
       # -----------------------------
-      - name: Cache Flutter dependencies
+      - name: Cache Flutter/Dart dependencies
         uses: actions/cache@v3
         with:
           path: |
@@ -40,12 +49,18 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-flutter-
 
+      # -----------------------------
+      # Atualizar dependências do projeto
+      # -----------------------------
       - name: Atualizar dependências
         run: flutter pub upgrade --major-versions
 
       - name: Instalar dependências
         run: flutter pub get
 
+      # -----------------------------
+      # Build APK release
+      # -----------------------------
       - name: Build APK
         run: flutter build apk --release
 
