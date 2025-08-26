@@ -1,0 +1,22 @@
+name: Observador
+
+on:
+  workflow_dispatch:
+
+jobs:
+  init-repo:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout vazio
+        uses: actions/checkout@v4
+
+      - name: Criar README e inicializar Git
+        run: |
+          echo "# Observador" > README.md
+          git init
+          git add README.md
+          git commit -m "first commit"
+          git branch -M main
+          git remote add origin https://github.com/thyrrel/Observador.git
+          git push -u origin main
